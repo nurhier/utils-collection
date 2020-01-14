@@ -1,4 +1,6 @@
-package org.common.enums;
+package org.common.utils;
+
+import org.common.enums.BaseEnum;
 
 /**
  * 枚举工具类

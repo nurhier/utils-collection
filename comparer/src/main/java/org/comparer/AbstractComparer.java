@@ -3,7 +3,7 @@ package org.comparer;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.common.enums.BaseEnum;
-import org.common.enums.EnumUtils;
+import org.common.utils.EnumUtils;
 import org.comparer.annotation.Comparer;
 
 import java.lang.reflect.Field;
@@ -27,7 +27,7 @@ public abstract class AbstractComparer {
      * @param logCompare  注解
      * @param sourceValue 源值
      * @param targetValue 目标值
-     * @return
+     * @return string
      */
     protected abstract String formatOutput(Comparer logCompare, String sourceValue, String targetValue);
 
@@ -35,8 +35,8 @@ public abstract class AbstractComparer {
      * 简单数组过滤，为真则不再解析数据
      * 支持重写扩展
      *
-     * @param data
-     * @return
+     * @param data 需过滤的数据
+     * @return Boolean
      */
     protected boolean parseSimpleListValueFilter(Object data) {
         return false;
@@ -48,7 +48,7 @@ public abstract class AbstractComparer {
      *
      * @param sourceValue
      * @param targetValue
-     * @return
+     * @return boolean
      */
     protected boolean isEqualOfValue(Object sourceValue, Object targetValue) {
         return sourceValue == null && targetValue == null || sourceValue != null && sourceValue.equals(targetValue);
@@ -77,8 +77,8 @@ public abstract class AbstractComparer {
      * @param clazz      对象类
      * @param sourceData 比较源对象
      * @param targetData 比较目标对象
-     * @param <T>
-     * @param <K>
+     * @param <T> T
+     * @param <K> K
      * @return 每个属性的差异
      */
     public <T, K> List<String> compareDiff(Class<T> clazz, K sourceData, K targetData) {

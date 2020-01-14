@@ -15,7 +15,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * @author hao.zhou02
+ * @author nurhier
  * @date 2019/9/27
  */
 public class ComparerTest extends AbstractComparer {
