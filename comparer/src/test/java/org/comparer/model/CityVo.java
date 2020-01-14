@@ -1,12 +1,12 @@
 package org.comparer.model;
 
-import com.ssu.comparer.annotation.Comparer;
-import com.ssu.comparer.impl.CityComparerServiceImpl;
-import com.ssu.comparer.enums.CityType;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import org.comparer.annotation.Comparer;
+import org.comparer.enums.CityType;
+import org.comparer.impl.CityComparerServiceImpl;
 
 /**
  * @author nurhier

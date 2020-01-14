@@ -3,11 +3,15 @@ package org.comparer;
 import org.comparer.annotation.Comparer;
 import org.comparer.model.CityVo;
 import org.comparer.model.DepartmentVo;
+import org.comparer.model.Employee;
 import org.comparer.model.LogUpdateVo;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -30,11 +34,13 @@ public class ComparerTest extends AbstractComparer {
     }
 
     private LogUpdateVo sourceLog() {
-        return new LogUpdateVo().setCityVo(getSourceCity()).setDepartmentVo(getSourceDepartment());
+        return new LogUpdateVo().setCityVo(getSourceCity()).setDepartmentVo(getSourceDepartment())
+                                .setEmployeeList(getSourceEmployeeList());
     }
 
     private LogUpdateVo targetLog() {
-        return new LogUpdateVo().setCityVo(getTargetCity()).setDepartmentVo(getTargetDepartment());
+        return new LogUpdateVo().setCityVo(getTargetCity()).setDepartmentVo(getTargetDepartment())
+                                .setEmployeeList(getTargetEmployeeList());
     }
 
     private CityVo getSourceCity() {
@@ -44,15 +50,29 @@ public class ComparerTest extends AbstractComparer {
     private DepartmentVo getSourceDepartment() {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_MONTH, -1);
-        return new DepartmentVo().setId(2L).setName("一部").setCode(2001L).setCreateTime(calendar.getTime());
+        return new DepartmentVo().setId(2L).setName("天津一部").setCode(22001L).setCreateTime(calendar.getTime());
     }
 
     private CityVo getTargetCity() {
-        return new CityVo().setId(1L).setName("天津卫").setCode("02201").setType(2);
+        return new CityVo().setId(1L).setName("北京").setCode("010").setType(2);
     }
 
     private DepartmentVo getTargetDepartment() {
+        return new DepartmentVo().setId(2L).setName("北京二部").setCode(10011L)
+                                 .setCreateTime(Calendar.getInstance().getTime());
+    }
 
-        return new DepartmentVo().setId(2L).setName("二部").setCode(200101L).setCreateTime(Calendar.getInstance().getTime());
+    private List<Employee> getSourceEmployeeList() {
+        List<Employee> list = new ArrayList<>();
+        list.add(new Employee().setName("张氏").setPhoneCode("022-23456789"));
+        list.add(new Employee().setName("张王氏").setPhoneCode("022-02345678"));
+        return list;
+    }
+
+    private List<Employee> getTargetEmployeeList() {
+        List<Employee> list = new ArrayList<>();
+        list.add(new Employee().setName("张氏二").setPhoneCode("010-23456789"));
+        list.add(new Employee().setName("张王氏二").setPhoneCode("010-23456789"));
+        return list;
     }
 }

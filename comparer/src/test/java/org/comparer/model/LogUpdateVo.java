@@ -4,8 +4,10 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.comparer.annotation.Comparer;
 
+import java.util.List;
+
 /**
- * @author hao.zhou02
+ * @author nurhier
  * @date 2019/9/27
  */
 @Accessors(chain = true)
@@ -15,4 +17,6 @@ public class LogUpdateVo {
     private CityVo cityVo;
     @Comparer(name = "部门")
     private DepartmentVo departmentVo;
+    @Comparer(name = "员工列表")
+    private List<Employee> employeeList;
 }

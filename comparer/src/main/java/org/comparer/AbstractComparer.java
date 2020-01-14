@@ -1,6 +1,7 @@
 package org.comparer;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.common.enums.BaseEnum;
 import org.common.enums.EnumUtils;
 import org.comparer.annotation.Comparer;
@@ -9,7 +10,10 @@ import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author nurhier
@@ -46,8 +50,17 @@ public abstract class AbstractComparer {
      * @param targetValue
      * @return
      */
-    protected boolean isEqualValue(Object sourceValue, Object targetValue) {
+    protected boolean isEqualOfValue(Object sourceValue, Object targetValue) {
         return sourceValue == null && targetValue == null || sourceValue != null && sourceValue.equals(targetValue);
+    }
+
+    protected boolean isEqualOfStringBuilder(StringBuilder sourceValue, StringBuilder targetValue) {
+        return (sourceValue == null && targetValue == null) || (sourceValue != null && targetValue != null && Objects
+                .equals(sourceValue.toString(), targetValue.toString()));
+    }
+
+    protected boolean isEqualOfBlankString(String sourceValue, String targetValue) {
+        return StringUtils.isBlank(sourceValue) && StringUtils.isBlank(targetValue);
     }
 
     protected <T> ComparerService<T> getComparerService(Comparer comparer)
@@ -70,46 +83,44 @@ public abstract class AbstractComparer {
      */
     public <T, K> List<String> compareDiff(Class<T> clazz, K sourceData, K targetData) {
         List<String> diffResult = new ArrayList<>();
-        doCompareDiff(clazz, sourceData, targetData, diffResult);
+        try {
+            doCompareDiff(clazz, sourceData, targetData, diffResult);
+        } catch (Exception e) {
+            log.error("compare object exception:", e);
+        }
         return diffResult;
     }
 
-    private <T, K> void doCompareDiff(Class<T> clazz, K sourceData, K targetData, List<String> diffResult) {
+    private <T, K> void doCompareDiff(Class<T> clazz, K sourceData, K targetData, List<String> diffResult)
+            throws NoSuchFieldException, IllegalAccessException {
         Field[] fields = clazz.getDeclaredFields();
-        try {
-            for (Field field : fields) {
-                Comparer logCompare = field.getAnnotation(Comparer.class);
-                if (logCompare == null || !logCompare.isCompare()) {
+        for (Field field : fields) {
+            Comparer logCompare = field.getAnnotation(Comparer.class);
+            if (logCompare == null || !logCompare.isCompare()) {
+                continue;
+            }
+            Object sourceValue = getFieldObject(sourceData, field);
+            Object targetValue = getFieldObject(targetData, field);
+            if (!isBaseProperty(field)) {
+                doCompareDiff(field.getType(), sourceValue, targetValue, diffResult);
+            } else {
+                if (isEqualOfValue(sourceValue, targetValue)) {
                     continue;
                 }
-                Object sourceValue = getFieldObject(sourceData, field);
-                Object targetValue = getFieldObject(targetData, field);
-                if (!isBaseProperty(field)) {
-                    doCompareDiff(field.getType(), sourceValue, targetValue, diffResult);
-                } else {
-                    if (isEqualValue(sourceValue, targetValue)) {
-                        continue;
+                try {
+                    //待优化，只支持List中对象属性字段为基本类型
+                    if (List.class.isAssignableFrom(field.getType())) {
+                        compareListValue(diffResult, (List) sourceValue, (List) targetValue);
+                    } else {
+                        String source = parseValue(logCompare, sourceValue);
+                        String target = parseValue(logCompare, targetValue);
+                        diffResult.add(formatOutput(logCompare, source, target));
                     }
-                    String source = null;
-                    String target = null;
-                    try {
-                        //待优化，只支持List中对象存在少量对比字段
-                        if (List.class.isAssignableFrom(field.getType())) {
-                            source = parseSimpleListValue((List<?>) sourceValue);
-                            target = parseSimpleListValue((List<?>) targetValue);
-                        } else {
-                            source = parseValue(logCompare, sourceValue);
-                            target = parseValue(logCompare, targetValue);
-                        }
-                    } catch (Exception e) {
-                        log.error("field parse exception，field：{}, value: {}, {}, error:", field.getName(),
-                                  sourceValue, targetValue, e);
-                    }
-                    diffResult.add(formatOutput(logCompare, source, target));
+                } catch (Exception e) {
+                    log.error("field parse exception，field：{}, value: {}, {}, error:", field.getName(),
+                              sourceValue, targetValue, e);
                 }
             }
-        } catch (Exception e) {
-            log.error("compare object exception:", e);
         }
     }
 
@@ -147,37 +158,78 @@ public abstract class AbstractComparer {
         return parsedValue;
     }
 
-    private <T> String parseSimpleListValue(List<T> list) {
-        StringBuilder sb = new StringBuilder();
-        if (list == null) {
-            return sb.toString();
+    private <T> void compareListValue(List<String> diffResult, List<T> sourceList, List<T> targetList) {
+        Map<Comparer, StringBuilder> sourceMap = parseListValue(sourceList);
+        Map<Comparer, StringBuilder> targetMap = parseListValue(targetList);
+        Map<Comparer, StringBuilder> mainMap;
+        if (sourceMap.isEmpty() && targetMap.isEmpty()) {
+            return;
         }
-        for (T object : list) {
-            if (parseSimpleListValueFilter(object)) {
+        mainMap = sourceMap;
+        if (mainMap.isEmpty()) {
+            mainMap = targetMap;
+        }
+        for (Map.Entry<Comparer, StringBuilder> entry : mainMap.entrySet()) {
+            StringBuilder source = sourceMap.get(entry.getKey());
+            StringBuilder target = targetMap.get(entry.getKey());
+            if (isEqualOfStringBuilder(source, target)) {
                 continue;
             }
-            Field[] fields = object.getClass().getDeclaredFields();
-            StringBuilder eleInnerSb = new StringBuilder();
-            for (Field field : fields) {
-                Comparer logCompare = field.getAnnotation(Comparer.class);
-                if (logCompare == null || !logCompare.isCompare()) {
-                    continue;
-                }
-                try {
-                    Object value = getFieldObject(object, field);
-                    String convertValue = parseValue(logCompare, value);
-                    if (convertValue != null) {
-                        eleInnerSb.append(convertValue).append(",");
-                    }
-                } catch (Exception e) {
-                    log.error("List element field parse exception, field：{}, error:", field.getName(), e);
-                }
+            String sourceString = null;
+            String targetString = null;
+            if (source != null && source.length() > 0) {
+                sourceString = source.substring(0, source.length() - 1);
             }
-            if (eleInnerSb.length() > 0) {
-                sb.append(eleInnerSb.substring(0, eleInnerSb.length() - 1)).append(";");
+            if (target != null && target.length() > 0) {
+                targetString = target.substring(0, target.length() - 1);
+            }
+            if (isEqualOfBlankString(sourceString, targetString)) {
+                continue;
+            }
+            diffResult.add(formatOutput(entry.getKey(), sourceString, targetString));
+        }
+    }
+
+    private <T> Map<Comparer, StringBuilder> parseListValue(List<T> list) {
+        Map<Comparer, StringBuilder> result = new HashMap<>(16);
+        if (list == null || list.isEmpty()) {
+            return result;
+        }
+        Map<Field, Comparer> fieldCompareMap = new HashMap<>(16);
+        Field[] fields = list.get(0).getClass().getDeclaredFields();
+        for (Field field : fields) {
+            Comparer comparer = field.getAnnotation(Comparer.class);
+            if (comparer == null || !comparer.isCompare()) {
+                continue;
+            }
+            fieldCompareMap.put(field, comparer);
+        }
+        for (T item : list) {
+            if (parseSimpleListValueFilter(item)) {
+                continue;
+            }
+            for (Map.Entry<Field, Comparer> entry : fieldCompareMap.entrySet()) {
+                StringBuilder sb = result.get(entry.getValue());
+                if (sb == null) {
+                    sb = new StringBuilder();
+                    result.put(entry.getValue(), sb);
+                }
+                buildListValueText(item, sb, entry.getKey(), entry.getValue());
             }
         }
-        return sb.length() > 0 ? sb.substring(0, sb.length() - 1) : "";
+        return result;
+    }
+
+    private <T> void buildListValueText(T object, StringBuilder eleInnerSb, Field field, Comparer comparer) {
+        try {
+            Object value = getFieldObject(object, field);
+            String convertValue = parseValue(comparer, value);
+            if (convertValue != null) {
+                eleInnerSb.append(convertValue).append(",");
+            }
+        } catch (Exception e) {
+            log.error("List字段解析异常，field：{}, error:", field.getName(), e);
+        }
     }
 
     private boolean isBaseProperty(Field field) {

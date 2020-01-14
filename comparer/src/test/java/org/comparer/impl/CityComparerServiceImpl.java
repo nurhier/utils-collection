@@ -12,6 +12,6 @@ public class CityComparerServiceImpl implements ComparerService<String> {
         if (param == null) {
             return "empty";
         }
-        return "city" + param;
+        return "city:" + param;
     }
 }

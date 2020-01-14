@@ -13,6 +13,6 @@ public class DepartmentComparerServiceImpl implements ComparerService<Long> {
         if (param == null) {
             return "empty";
         }
-        return "department" + param;
+        return "department:" + param;
     }
 }
