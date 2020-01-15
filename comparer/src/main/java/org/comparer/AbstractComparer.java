@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.common.enums.BaseEnum;
 import org.common.utils.EnumUtils;
+import org.common.utils.ReflectionUtils;
 import org.comparer.annotation.Comparer;
 
 import java.lang.reflect.Field;
@@ -92,7 +93,7 @@ public abstract class AbstractComparer {
     }
 
     private <T, K> void doCompareDiff(Class<T> clazz, K sourceData, K targetData, List<String> diffResult)
-            throws NoSuchFieldException, IllegalAccessException {
+            throws IllegalAccessException {
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
             Comparer logCompare = field.getAnnotation(Comparer.class);
@@ -124,16 +125,8 @@ public abstract class AbstractComparer {
         }
     }
 
-    private <K> Object getFieldObject(K data, Field field) throws NoSuchFieldException, IllegalAccessException {
-        Object targetValue = null;
-        if (data != null) {
-            Field targetField = data.getClass().getDeclaredField(field.getName());
-            if (!targetField.isAccessible()) {
-                targetField.setAccessible(true);
-            }
-            targetValue = targetField.get(data);
-        }
-        return targetValue;
+    private <K> Object getFieldObject(K data, Field field) throws IllegalAccessException {
+        return ReflectionUtils.getFieldValue(data, field);
     }
 
     private <T> String parseValue(Comparer comparer, T value) throws IllegalAccessException, InstantiationException {

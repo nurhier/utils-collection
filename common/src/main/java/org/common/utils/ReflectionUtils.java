@@ -3,6 +3,9 @@ package org.common.utils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,6 +17,36 @@ import java.util.Set;
 @Slf4j
 public class ReflectionUtils {
     private ReflectionUtils() {
+    }
+
+    public static <T> Object getFieldValue(T target, Field field) throws IllegalAccessException {
+        Object value = null;
+        if (target != null && field != null) {
+            if (!field.isAccessible()) {
+                field.setAccessible(true);
+            }
+            value = field.get(target);
+        }
+        return value;
+    }
+
+    public static <T> void setFieldValue(Object value, T target, Field field) throws IllegalAccessException {
+        if (target != null && field != null) {
+            if (!field.isAccessible()) {
+                field.setAccessible(true);
+            }
+            field.set(target, value);
+        }
+    }
+
+    public static Object invokeMethod(Method method, Object target, Object... args)
+            throws InvocationTargetException, IllegalAccessException {
+        return method.invoke(target, args);
+    }
+
+    public static boolean isPublicStaticFinal(Field field) {
+        int modifiers = field.getModifiers();
+        return (Modifier.isPublic(modifiers) && Modifier.isStatic(modifiers) && Modifier.isFinal(modifiers));
     }
 
     /**

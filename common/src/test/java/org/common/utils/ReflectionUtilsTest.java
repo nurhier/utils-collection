@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.model.BaseModel;
 import org.model.Vehicle;
 
+import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,6 +15,25 @@ import java.util.Set;
  * @date 2020/1/14
  */
 public class ReflectionUtilsTest {
+
+    @Test
+    public void getFiledValueTest() throws NoSuchFieldException, IllegalAccessException {
+        Vehicle vehicle = new Vehicle();
+        vehicle.setVehicleNo("京A6R349");
+        Field field = vehicle.getClass().getDeclaredField("vehicleNo");
+        Object value = ReflectionUtils.getFieldValue(vehicle, field);
+        Assert.assertEquals(vehicle.getVehicleNo(), value);
+    }
+
+    @Test
+    public void setFieldValueTest() throws IllegalAccessException, NoSuchFieldException {
+        String vehicleNo = "京A6R349";
+        Vehicle vehicle = new Vehicle();
+        Field field = vehicle.getClass().getDeclaredField("vehicleNo");
+        ReflectionUtils.setFieldValue(vehicleNo, vehicle, field);
+        Assert.assertEquals(vehicle.getVehicleNo(), vehicleNo);
+    }
+
     @Test
     public void isPropertiesNullTest() {
         Assert.assertTrue(ReflectionUtils.isPropertiesNull(null, BaseModel.class, "id"));
