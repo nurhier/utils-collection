@@ -3,6 +3,7 @@ package org.comparer;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.common.enums.BaseEnum;
+import org.common.utils.DateUtils;
 import org.common.utils.EnumUtils;
 import org.common.utils.ReflectionUtils;
 import org.comparer.annotation.Comparer;
@@ -144,8 +145,7 @@ public abstract class AbstractComparer {
         } else {
             parsedValue = value.toString();
             if (value instanceof Date) {
-                SimpleDateFormat timeSdf = new SimpleDateFormat(comparer.datePattern());
-                parsedValue = timeSdf.format(value);
+                parsedValue = DateUtils.format((Date) value, comparer.datePattern());
             }
         }
         return parsedValue;

@@ -1,5 +1,7 @@
 package org.common.utils;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -25,22 +27,36 @@ public class DateUtils {
         if (date == null || datePattern == null) {
             return null;
         }
-        return getDateFormat(datePattern).parse(date);
+        return getDateFormat(datePattern.getPattern()).parse(date);
     }
 
     public static String format(Date date, DatePattern datePattern) {
         if (date == null || datePattern == null) {
             return null;
         }
+        return getDateFormat(datePattern.getPattern()).format(date);
+    }
+
+    public static Date parse(String date, String datePattern) throws ParseException {
+        if (date == null || StringUtils.isBlank(datePattern)) {
+            return null;
+        }
+        return getDateFormat(datePattern).parse(date);
+    }
+
+    public static String format(Date date, String datePattern) {
+        if (date == null || StringUtils.isBlank(datePattern)) {
+            return null;
+        }
         return getDateFormat(datePattern).format(date);
     }
 
-    private static DateFormat getDateFormat(DatePattern datePattern) {
+    private static DateFormat getDateFormat(String datePattern) {
         Map<String, DateFormat> dateFormatMap = threadLocal.get();
-        DateFormat dateFormat = dateFormatMap.get(datePattern.getPattern());
+        DateFormat dateFormat = dateFormatMap.get(datePattern);
         if (dateFormat == null) {
-            dateFormat = new SimpleDateFormat(datePattern.getPattern());
-            dateFormatMap.put(datePattern.getPattern(), dateFormat);
+            dateFormat = new SimpleDateFormat(datePattern);
+            dateFormatMap.put(datePattern, dateFormat);
         }
         return dateFormat;
     }
