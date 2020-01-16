@@ -1,5 +1,6 @@
 package org.common.utils;
 
+import org.common.concurrency.AbstractConcurrency;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -24,15 +25,17 @@ public class DateUtilsTest extends AbstractConcurrency {
 
     @Test
     public void concurrencyDateParseTest() throws InterruptedException {
-        super.execute(100);
-        Thread.sleep(2000);
+        super.execute(200);
     }
 
     @Override
     protected void runTask() {
         try {
             String date = "2020-01-15 22:59:43";
-            System.out.println(DateUtils.saa());
+            Date parsedDate = DateUtils.parse(date, DateUtils.DatePattern.yyyy_MM_dd_HH_mm_ss);
+            String formatDate = DateUtils.format(parsedDate, DateUtils.DatePattern.yyyy_MM_dd_HH_mm_ss);
+            System.out.println(formatDate);
+            Assert.assertEquals(date, formatDate);
         } catch (Exception e) {
             Assert.fail(e.getMessage());
         }

@@ -1,6 +1,4 @@
-package org.common.utils;
-
-import lombok.SneakyThrows;
+package org.common.concurrency;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -12,6 +10,7 @@ import java.util.concurrent.Executors;
  */
 public abstract class AbstractConcurrency {
     private static ExecutorService executorService = Executors.newFixedThreadPool(10);
+    private static CountDownLatch countDownLatchMain;
     private static CountDownLatch countDownLatch;
 
     /**
@@ -19,22 +18,25 @@ public abstract class AbstractConcurrency {
      */
     protected abstract void runTask();
 
-    public void execute(int concurrentCount) {
+    public void execute(int concurrentCount) throws InterruptedException {
+        countDownLatchMain = new CountDownLatch(concurrentCount);
         countDownLatch = new CountDownLatch(concurrentCount);
         for (int count = 0; count < concurrentCount; count++) {
             executorService.execute(new Runnable() {
                 @Override
                 public void run() {
                     try {
-                        countDownLatch.wait();
+                        countDownLatch.await();
                         runTask();
                     } catch (Exception e) {
                         e.getStackTrace();
                     } finally {
-                        countDownLatch.countDown();
+                        countDownLatchMain.countDown();
                     }
                 }
             });
+            countDownLatch.countDown();
         }
+        countDownLatchMain.await();
     }
 }

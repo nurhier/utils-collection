@@ -14,12 +14,6 @@ import java.util.Map;
 public class DateUtils {
     private DateUtils() {}
 
-    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat( DatePattern.yyyy_MM_dd.getPattern());
-
-    public static String saa() {
-        return simpleDateFormat.format(new Date());
-    }
-
     private static ThreadLocal<Map<String, DateFormat>> threadLocal = new ThreadLocal<Map<String, DateFormat>>() {
         @Override
         protected Map<String, DateFormat> initialValue() {
