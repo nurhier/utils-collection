@@ -2,6 +2,7 @@ package org.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import java.util.Date;
@@ -10,6 +11,7 @@ import java.util.Date;
  * @author nurhier
  * @date 2020/1/14
  */
+@ToString
 @Getter
 @Setter
 @Accessors(chain = true)
