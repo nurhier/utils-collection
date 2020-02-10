@@ -14,6 +14,7 @@
         <module>common</module>
         <module>spring</module>
         <module>excel</module>
+        <module>validator</module>
     </modules>
 
 
