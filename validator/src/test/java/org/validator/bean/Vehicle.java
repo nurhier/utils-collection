@@ -2,6 +2,7 @@ package org.validator.bean;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
+import org.validator.custom.ValidDate;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -20,4 +21,6 @@ public class Vehicle {
     private String engineNo;
     @Pattern(regexp = "[0-9]")
     private String modelId;
+    @ValidDate
+    private String createTime;
 }

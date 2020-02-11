@@ -31,6 +31,11 @@ public class ValidationUtils {
         return validateResult(violationSet);
     }
 
+    public static <T> ValidationResult<T> validate(T target, String property) {
+        Set<ConstraintViolation<T>> violationSet = validator.validateProperty(target, property);
+        return validateResult(violationSet);
+    }
+
     private static <T> ValidationResult<T> validateResult(Set<ConstraintViolation<T>> violationSet) {
         if (violationSet == null || violationSet.isEmpty()) {
             return new ValidationResult<>(true, violationSet, Collections.emptyList());

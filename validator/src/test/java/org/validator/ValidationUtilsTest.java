@@ -2,8 +2,8 @@ package org.validator;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.validator.bean.Vehicle;
 import org.validator.bean.Check;
+import org.validator.bean.Vehicle;
 import org.validator.utils.ValidationUtils;
 
 /**
@@ -29,6 +29,15 @@ public class ValidationUtilsTest {
         ValidationResult<Vehicle> result = ValidationUtils.validate(vehicle, Check.class);
         Assert.assertTrue(vehicle.getFrameNo().length() > 17);
         Assert.assertTrue(result.isPassed());
+        printResult(result);
+    }
+
+    @Test
+    public void validateCustomTest() {
+        Vehicle vehicle = new Vehicle();
+        vehicle.setCreateTime("0000-99-88");
+        ValidationResult<Vehicle> result = ValidationUtils.validate(vehicle, "createTime");
+        Assert.assertFalse(result.isPassed());
         printResult(result);
     }
 
