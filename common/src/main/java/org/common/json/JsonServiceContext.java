@@ -1,7 +1,5 @@
 package org.common.json;
 
-import org.common.json.enums.JsonEnum;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,18 +19,11 @@ public class JsonServiceContext {
         }
     }
 
-    public static JsonService getJsonService() {
+    static JsonService getJsonService() {
         return jsonServiceList.get(0);
     }
 
-    public static JsonService getJsonService(JsonEnum jsonEnum) {
-        if (jsonEnum == null || jsonEnum.getClazz() == null) {
-            return jsonServiceList.get(0);
-        }
-        return jsonServiceMap.get(jsonEnum.getClazz().getName());
-    }
-
-    public static JsonService getJsonService(Class<JsonService> clazz) throws ClassNotFoundException {
+    static JsonService getJsonService(Class<? extends JsonService> clazz) throws ClassNotFoundException {
         if (clazz == null) {
             return jsonServiceList.get(0);
         }

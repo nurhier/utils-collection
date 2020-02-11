@@ -23,22 +23,22 @@ public class JsonTest {
 
     @Test
     public void toJsonDefaultTest() {
-        String jsonString = JsonUtils.getInstance().toJSONString(vehicle);
+        String jsonString = JsonUtils.toJSONString(vehicle);
         System.out.println(jsonString);
         Assert.assertNotNull(jsonString);
     }
 
     @Test
     public void fromJsonDefaultTest() {
-        Vehicle vehicle = JsonUtils.getInstance().parseObject(vehicleJson, Vehicle.class);
+        Vehicle vehicle = JsonUtils.parseObject(vehicleJson, Vehicle.class);
         System.out.println(vehicle);
         Assert.assertNotNull(vehicle);
     }
 
     @Test
     public void toJsonEnumsTest() {
-        String gson = JsonUtils.getInstance(JsonEnum.GSON).toJSONString(vehicle);
-        String fastjson = JsonUtils.getInstance(JsonEnum.FAST_JSON).toJSONString(vehicle);
+        String gson = JsonUtils.toJSONString(JsonEnum.GSON, vehicle);
+        String fastjson = JsonUtils.toJSONString(JsonEnum.FAST_JSON, vehicle);
         System.out.println("gson:" + gson);
         System.out.println("fastJson:" + fastjson);
         Assert.assertEquals(gson, fastjson);
@@ -46,8 +46,8 @@ public class JsonTest {
 
     @Test
     public void fromJsonEnumsTest() {
-        Vehicle gsonVehicle = JsonUtils.getInstance(JsonEnum.GSON).parseObject(vehicleJson, Vehicle.class);
-        Vehicle fastJsonVehicle = JsonUtils.getInstance(JsonEnum.FAST_JSON).parseObject(vehicleJson, Vehicle.class);
+        Vehicle gsonVehicle = JsonUtils.parseObject(JsonEnum.GSON, vehicleJson, Vehicle.class);
+        Vehicle fastJsonVehicle = JsonUtils.parseObject(JsonEnum.FAST_JSON, vehicleJson, Vehicle.class);
         System.out.println("gson:" + gsonVehicle);
         System.out.println("fastJson:" + fastJsonVehicle);
         Assert.assertEquals(gsonVehicle.getFrameNo(), fastJsonVehicle.getFrameNo());

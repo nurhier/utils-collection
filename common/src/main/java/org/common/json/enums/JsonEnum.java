@@ -1,7 +1,8 @@
 package org.common.json.enums;
 
-import org.common.json.impl.GsonServiceImpl;
+import org.common.json.JsonService;
 import org.common.json.impl.FastJsonServiceImpl;
+import org.common.json.impl.GsonServiceImpl;
 
 /**
  * json implement
@@ -19,13 +20,13 @@ public enum JsonEnum {
      */
     GSON(GsonServiceImpl.class);
 
-    private Class<?> clazz;
+    private Class<? extends JsonService> clazz;
 
-    JsonEnum(Class<?> clazz) {
+    JsonEnum(Class<? extends JsonService> clazz) {
         this.clazz = clazz;
     }
 
-    public Class<?> getClazz() {
+    public Class<? extends JsonService> getClazz() {
         return clazz;
     }
 }
