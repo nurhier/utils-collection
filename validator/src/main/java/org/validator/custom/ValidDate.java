@@ -42,6 +42,9 @@ public @interface ValidDate {
 
         @Override
         public boolean isValid(String value, ConstraintValidatorContext constraintValidatorContext) {
+            if (value == null || value.equals("")) {
+                return true;
+            }
             try {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);
                 simpleDateFormat.parse(value);
