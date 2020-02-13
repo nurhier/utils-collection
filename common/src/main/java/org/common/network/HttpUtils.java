@@ -85,23 +85,13 @@ public class HttpUtils {
         }
     }
 
-    private static CloseableHttpClient getHttpClient() {
+    private static synchronized CloseableHttpClient getHttpClient() {
         if (httpClient == null) {
-            synchronized (LOCK) {
-                if (httpClient == null) {
-                    RequestConfig requestConfig = RequestConfig.custom()
-                                                               .setConnectionRequestTimeout(5000)
-                                                               .setConnectTimeout(5000)
-                                                               .setSocketTimeout(5000)
-                                                               .build();
-                    httpClient = HttpClients.custom()
-                                            .setDefaultRequestConfig(requestConfig)
-                                            .setConnectionManager(cm)
-                                            .build();
-                    scheduler.scheduleAtFixedRate(new IdleConnectionMonitor(cm), (long) 10 * 1000, (long) 30 * 1000,
-                                                  TimeUnit.MILLISECONDS);
-                }
-            }
+            RequestConfig requestConfig = RequestConfig.custom().setConnectionRequestTimeout(5000)
+                                                       .setConnectTimeout(5000).setSocketTimeout(5000).build();
+            httpClient = HttpClients.custom().setDefaultRequestConfig(requestConfig).setConnectionManager(cm).build();
+            scheduler.scheduleAtFixedRate(new IdleConnectionMonitor(cm), (long) 10 * 1000,
+                                          (long) 30 * 1000, TimeUnit.MILLISECONDS);
         }
         return httpClient;
     }
