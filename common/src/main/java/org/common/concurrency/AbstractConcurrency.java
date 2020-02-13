@@ -9,9 +9,9 @@ import java.util.concurrent.Executors;
  * @date 2020/1/15
  */
 public abstract class AbstractConcurrency {
-    private static ExecutorService executorService = Executors.newFixedThreadPool(10);
-    private static CountDownLatch countDownLatchMain;
-    private static CountDownLatch countDownLatch;
+    private ExecutorService executorService = Executors.newFixedThreadPool(10);
+    private CountDownLatch countDownLatchMain;
+    private CountDownLatch countDownLatch;
 
     /**
      * 执行任务
