@@ -37,7 +37,7 @@ public class HttpUtils {
     /**
      * httpClient
      */
-    private static volatile CloseableHttpClient httpClient;
+    private static CloseableHttpClient httpClient;
     private static PoolingHttpClientConnectionManager cm;
     private final static Object LOCK = new Object();
     private static ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
@@ -98,7 +98,7 @@ public class HttpUtils {
                                             .setDefaultRequestConfig(requestConfig)
                                             .setConnectionManager(cm)
                                             .build();
-                    scheduler.scheduleAtFixedRate(new IdleConnectionMonitor(cm), 10 * 1000, 30 * 1000,
+                    scheduler.scheduleAtFixedRate(new IdleConnectionMonitor(cm), (long) 10 * 1000, (long) 30 * 1000,
                                                   TimeUnit.MILLISECONDS);
                 }
             }
@@ -117,7 +117,7 @@ public class HttpUtils {
         public void run() {
             if (connectionManager != null) {
                 connectionManager.closeExpiredConnections();
-                connectionManager.closeIdleConnections(1000 * 10, TimeUnit.MILLISECONDS);
+                connectionManager.closeIdleConnections((long) 1000 * 10, TimeUnit.MILLISECONDS);
             }
             if (httpClient == null) {
                 scheduler.shutdown();

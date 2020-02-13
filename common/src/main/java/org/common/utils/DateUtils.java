@@ -61,6 +61,10 @@ public class DateUtils {
         return dateFormat;
     }
 
+    private static void removeThreadLocal() {
+        threadLocal.remove();
+    }
+
     /**
      * 时间表达式枚举
      */
