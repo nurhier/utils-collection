@@ -6,7 +6,7 @@ import org.common.enums.BaseEnum;
  * @author nurhier
  * @date 2020/1/14
  */
-public enum VehicleNoType implements BaseEnum {
+public enum VehicleNoType implements BaseEnum<Integer> {
     BLUE("蓝色牌照", 10),
     GREEN("绿色牌照", 20);
 

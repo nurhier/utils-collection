@@ -14,13 +14,14 @@ public class EnumUtils {
      *
      * @param enumClass 枚举class
      * @param code      枚举编码
+     * @param <T>       编码类型
      * @return 枚举名称
      */
-    public static String getEnumNameByCode(Class<? extends BaseEnum> enumClass, Integer code) {
+    public static <T> String getEnumNameByCode(Class<? extends BaseEnum<T>> enumClass, T code) {
         if (code == null) {
             return null;
         }
-        BaseEnum enumValue = getEnumByCode(enumClass, code);
+        BaseEnum<T> enumValue = getEnumByCode(enumClass, code);
         if (enumValue == null) {
             return null;
         }
@@ -32,13 +33,14 @@ public class EnumUtils {
      *
      * @param enumClass 枚举class
      * @param name      枚举名称
+     * @param <T>       编码类型
      * @return 枚举编码
      */
-    public static Integer getEnumCodeByName(Class<? extends BaseEnum> enumClass, String name) {
+    public static <T> T getEnumCodeByName(Class<? extends BaseEnum<T>> enumClass, String name) {
         if (name == null) {
             return null;
         }
-        BaseEnum enumValue = getEnumByName(enumClass, name);
+        BaseEnum<T> enumValue = getEnumByName(enumClass, name);
         if (enumValue == null) {
             return null;
         }
@@ -50,14 +52,15 @@ public class EnumUtils {
      *
      * @param enumClass 枚举class
      * @param code      枚举编码
-     * @param <T>       枚举类型
+     * @param <T>       编码类型
+     * @param <E>       枚举类型
      * @return 枚举
      */
-    public static <T extends BaseEnum> T getEnumByCode(Class<T> enumClass, Integer code) {
+    public static <E extends BaseEnum<T>, T> E getEnumByCode(Class<E> enumClass, T code) {
         if (code == null) {
             return null;
         }
-        for (T each : enumClass.getEnumConstants()) {
+        for (E each : enumClass.getEnumConstants()) {
             if (each.getCode().equals(code)) {
                 return each;
             }
@@ -70,14 +73,15 @@ public class EnumUtils {
      *
      * @param enumClass 枚举class
      * @param name      枚举名称
-     * @param <T>       枚举类型
+     * @param <T>       编码类型
+     * @param <E>       enum类型
      * @return 枚举
      */
-    public static <T extends BaseEnum> T getEnumByName(Class<T> enumClass, String name) {
+    public static <E extends BaseEnum<T>, T> E getEnumByName(Class<E> enumClass, String name) {
         if (name == null) {
             return null;
         }
-        for (T each : enumClass.getEnumConstants()) {
+        for (E each : enumClass.getEnumConstants()) {
             if (each.getName().equals(name)) {
                 return each;
             }

@@ -6,11 +6,13 @@ import org.common.enums.BaseEnum;
  * @author nurhier
  * @date 2019/9/27
  */
-public enum CityType implements BaseEnum {
+public enum CityType implements BaseEnum<Integer> {
     /**
      * enum
      */
-    SHENG("省会市", 1), DI("地级市", 2), XIAN("县级市", 3);
+    SHENG("省会市", 1),
+    DI("地级市", 2),
+    XIAN("县级市", 3);
 
     private String name;
     private Integer code;

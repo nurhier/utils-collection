@@ -4,7 +4,7 @@ package org.common.enums;
  * @author nurhier
  * @date 2019/9/27
  */
-public interface BaseEnum {
+public interface BaseEnum<T> {
     /**
      * enum name
      *
@@ -15,7 +15,7 @@ public interface BaseEnum {
     /**
      * enum code
      *
-     * @return integer
+     * @return T
      */
-    Integer getCode();
+    T getCode();
 }

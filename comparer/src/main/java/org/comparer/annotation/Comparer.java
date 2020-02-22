@@ -68,7 +68,7 @@ public @interface Comparer {
     /**
      * default comparer enum
      */
-    enum DefaultCompareEnum implements BaseEnum {
+    enum DefaultCompareEnum implements BaseEnum<Integer> {
         ;
 
         @Override
