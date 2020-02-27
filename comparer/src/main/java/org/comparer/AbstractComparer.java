@@ -9,7 +9,6 @@ import org.common.utils.ReflectionUtils;
 import org.comparer.annotation.Comparer;
 
 import java.lang.reflect.Field;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -136,7 +135,7 @@ public abstract class AbstractComparer {
             return null;
         }
         if (comparer.enumClass().isEnum() && !comparer.enumClass().equals(Comparer.DefaultCompareEnum.class)) {
-            parsedValue = (EnumUtils.getEnumNameByCode(comparer.enumClass(), (Integer) value));
+            parsedValue = EnumUtils.getEnumNameByCode(comparer.enumClass(), (Integer) value);
         } else if (!(comparer.beanClass().equals(Comparer.DefaultComparerServiceImpl.class))) {
             ComparerService<T> comparerService = getComparerService(comparer);
             parsedValue = comparerService.getName(value);

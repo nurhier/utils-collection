@@ -46,7 +46,7 @@ public @interface Comparer {
      *
      * @return class
      */
-    Class<? extends BaseEnum> enumClass() default DefaultCompareEnum.class;
+    Class<? extends BaseEnum<Integer>> enumClass() default DefaultCompareEnum.class;
 
     /**
      * bean服务类
