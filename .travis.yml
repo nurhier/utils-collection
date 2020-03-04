@@ -5,12 +5,7 @@ jdk:
 cache:
   directories:
     - $HOME/.m2
-addons:
-  sonarcloud:
-    organization: "nurhier"
-    token:
-      secure: "nuZy8k2CB3d0snQd2ab3RIf/4oWUvV+TuZBcmc+FqvfGsGKwlS3/weilPk0tE3BRjfo2HlW1ZYS8H+uhinTADYEimpcnHnsG8WWsqoYltS0ZNlvewcQ0anGXiH6lW+PmwWT3qfekuf+JKJd8SqKctwLnYoYfu0OnnoYwtF0hZTgO1FdzWD/9wFvsVcJJFA02uR4DY/WLbsRQINbH37kpu2DmUxTySQPvaAPxK8iZzXyUWNUNaVGZmMF8HuI4C6N+L2cpAsLVQz1cBvC1/xRhlGqsGOHVeR1CrfwA4sh9bWe/mcELIcr2au3QHMq1C75D07V6PkPRtOAMpUCMlyIyZYko1yUn2pDjaomLAuSos+grHA5Nb0GXj3t1Xf2LJIirtcwCjhinv983ZlF/dZuMzqeOfpq+QMkvPOx7rAgTakxJyp7bY/9oM9HWCaqW4KCM4hVGPSghPe910ZOvWnuLzZRJEDHfsyYtCFkX/M6T3q2HTe/fohl3LKtwYeXvnNB8x82bVJ5CF9pCGHeiqdeduMRng8Rvnpo3Ka6OgKxcQbNOfIPczBI3ui6Dn/3/JhvvWgY1E1HJ5RGQuV4iL3G105eIqKu36RjosMsnwnSGmW0m7xbxnACiLSAfTa3t2YTqyikQ1eXLt/2z3ltvVoyGR6rlgzO6istmP/OJenvmEBk="
 script:
-  - mvn clean cobertura:cobertura org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=nurhier_utils-collection2
+  - mvn clean cobertura:cobertura org.jacoco:jacoco-maven-plugin:prepare-agent
 after_success:
   - bash <(curl -s https://codecov.io/bash)
