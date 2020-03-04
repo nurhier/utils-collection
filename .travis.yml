@@ -1,19 +1,16 @@
 language: java
 sudo: false
 jdk:
-- openjdk8
+  - openjdk8
 cache:
   directories:
-  - $HOME/.m2
+    - $HOME/.m2
 addons:
   sonarcloud:
-    organization: nurhier
+    organization: "nurhier"
     token:
-      secure: ${SONAR_TOKEN}
+      secure: "TApzu1LLnbIH1+0Blzp1+vL908H3kxUyJveTQwOgsL5/Aa21pCSOjC7QZDNdAL85lDz2s7vFrrYysnoAHrr24LJGMh5H6GfB86qX8QklhVkWDLzs29MaoLAD70UB9hs74QBkFKkS6vdobimttkO78R6Tt4tZ7il2JuxNyzgdDJ48aDAtT2LZUB3T5G1OafxFseukdVvokFDE7DYHsWKPDq2p4WNEbZwP2T5drJ5CgCiYRaQR8BtXhQae9At6NYgBuaRIKs4hcvJ7+3nzO17wuL1+5nBqQ+QGpIozQ9pPop98IxqvxRP9p/cjm4nnXKxyWsKKSHitgHhQwwV2gTVHemK7GPpvhloSNkM9YTBef5CvJ9snw6ceVkCPGenAh6F1bYKAr5tZ0S+ZRK/HqCBquJ+qBMydXelvoZuKNKAP1TCCBdd4T2jAg/rQh0qc8EUVx4wtU7iPAlciQjfzsd+bLqQjPaK6WcVUG3aXwsCHArMuS7jIp6Q2Y/itzsKz2WtCjkvroaBeKJ7+czaOWC+x4dLrAMgDKbkhVN+TFAA/GsxpOvwEoRU//p4D8SPZflULt16ycA+n/0gOx7+FsyAh9FK9E2ycfeKLKy9ArY/hcrGzhQG4vZnGQbfbVEHHRlXnwUuG4vnXYFFmpacTK2w3KiRutVg/qOhAIpV3qI/4OBc="
 script:
-- mvn clean cobertura:cobertura org.jacoco:jacoco-maven-plugin:prepare-agent install
-  sonar:sonar -Dsonar.projectKey=nurhier_utils-collection
+  - mvn clean cobertura:cobertura org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=nurhier_utils-collection
 after_success:
-- bash <(curl -s https://codecov.io/bash)
-dd:
-  secure: TApzu1LLnbIH1+0Blzp1+vL908H3kxUyJveTQwOgsL5/Aa21pCSOjC7QZDNdAL85lDz2s7vFrrYysnoAHrr24LJGMh5H6GfB86qX8QklhVkWDLzs29MaoLAD70UB9hs74QBkFKkS6vdobimttkO78R6Tt4tZ7il2JuxNyzgdDJ48aDAtT2LZUB3T5G1OafxFseukdVvokFDE7DYHsWKPDq2p4WNEbZwP2T5drJ5CgCiYRaQR8BtXhQae9At6NYgBuaRIKs4hcvJ7+3nzO17wuL1+5nBqQ+QGpIozQ9pPop98IxqvxRP9p/cjm4nnXKxyWsKKSHitgHhQwwV2gTVHemK7GPpvhloSNkM9YTBef5CvJ9snw6ceVkCPGenAh6F1bYKAr5tZ0S+ZRK/HqCBquJ+qBMydXelvoZuKNKAP1TCCBdd4T2jAg/rQh0qc8EUVx4wtU7iPAlciQjfzsd+bLqQjPaK6WcVUG3aXwsCHArMuS7jIp6Q2Y/itzsKz2WtCjkvroaBeKJ7+czaOWC+x4dLrAMgDKbkhVN+TFAA/GsxpOvwEoRU//p4D8SPZflULt16ycA+n/0gOx7+FsyAh9FK9E2ycfeKLKy9ArY/hcrGzhQG4vZnGQbfbVEHHRlXnwUuG4vnXYFFmpacTK2w3KiRutVg/qOhAIpV3qI/4OBc=
+  - bash <(curl -s https://codecov.io/bash)
