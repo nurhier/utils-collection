@@ -37,7 +37,7 @@ public class BeanUtilsTest {
         Date time = new Date();
         VehicleInfo vehicle = new VehicleInfo().setFrameNo(frameNo).setId(12L).setVehicleNo("京C78782")
                                                .setCreateTime(new Date()).setUpdateTime(time);
-        BeanUtils.copyNotNullProperties(car, vehicle);
+        BeanUtils.copyNonNullProperties(car, vehicle);
         Assert.assertEquals(vehicle.getId(), car.getId());
         Assert.assertEquals(vehicle.getFrameNo(), car.getFrameNo());
         Assert.assertEquals(vehicle.getUpdateTime(), time);

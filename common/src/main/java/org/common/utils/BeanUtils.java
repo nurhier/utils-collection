@@ -51,7 +51,7 @@ public class BeanUtils {
      * @param target target
      * @date 2020/3/4 15:20
      */
-    public static <S, T> void copyNotNullProperties(S source, T target) {
+    public static <S, T> void copyNonNullProperties(S source, T target) {
         mapperFactoryNotNull.getMapperFacade().map(source, target);
     }
 
