@@ -9,7 +9,7 @@ addons:
   sonarcloud:
     organization: "nurhier"
     token:
-      secure: "33a2b32b585e8d4c388b49463222c487267b517d" # encrypted value of your token
+      secure: "${SONAR_TOKEN}" # encrypted value of your token
 script:
   - mvn clean cobertura:cobertura org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=utils-collection
 after_success:
