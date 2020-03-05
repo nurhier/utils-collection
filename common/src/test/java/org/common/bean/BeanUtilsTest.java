@@ -7,8 +7,10 @@ import org.model.Car;
 import org.model.Vehicle;
 import org.model.VehicleInfo;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -87,5 +89,30 @@ public class BeanUtilsTest {
         Car car = new Car().setFrameNo("CAR2020000111").setId(1L).setVehicleNo("京C78787").setCreateTime(new Date());
         VehicleInfo vehicle = BeanUtils.copy(car, VehicleInfo.class, (String) null, null);
         Assert.assertEquals(vehicle.getVehicleNo(), car.getVehicleNo());
+    }
+
+    @Test
+    public void testCopyList() {
+        List<Car> list = new ArrayList<>();
+        list.add(new Car().setFrameNo("CAR2020000111").setId(1L).setVehicleNo("京C78787").setCreateTime(new Date()));
+        list.add(new Car().setFrameNo("CAR2020000112").setId(2L).setVehicleNo("京C78782").setCreateTime(new Date()));
+        list.add(new Car().setFrameNo("CAR2020000113").setId(3L).setVehicleNo("京C78783").setCreateTime(new Date()));
+        List<VehicleInfo> vehicleInfos = BeanUtils.copyList(list, VehicleInfo.class);
+        Assert.assertNotNull(vehicleInfos);
+        Assert.assertEquals(vehicleInfos.size(), list.size());
+    }
+
+    @Test
+    public void testCopyListWithFieldMap() {
+        Map<String, String> filedMap = new HashMap<>();
+        filedMap.put("type", "vehicleType");
+        List<Car> list = new ArrayList<>();
+        list.add(new Car().setFrameNo("CAR2020000111").setId(1L).setVehicleNo("京C78787").setType("type1"));
+        list.add(new Car().setFrameNo("CAR2020000112").setId(2L).setVehicleNo("京C78782").setType("type2"));
+        list.add(new Car().setFrameNo("CAR2020000113").setId(3L).setVehicleNo("京C78783").setType("type3"));
+        List<VehicleInfo> vehicleInfos = BeanUtils.copyList(list, VehicleInfo.class, filedMap);
+        Assert.assertNotNull(vehicleInfos);
+        Assert.assertEquals(vehicleInfos.size(), list.size());
+        vehicleInfos.forEach(vehicleInfo -> Assert.assertNull(vehicleInfo.getVehicleType()));
     }
 }

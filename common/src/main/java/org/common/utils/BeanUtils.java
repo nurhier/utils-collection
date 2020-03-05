@@ -6,6 +6,8 @@ import ma.glasnost.orika.impl.DefaultMapperFactory;
 import ma.glasnost.orika.metadata.ClassMapBuilder;
 
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -121,6 +123,30 @@ public class BeanUtils {
                                    String[] ignoreProperties) {
         MapperFacade mapperFacade = getMapperFacade(source, target, fieldMap, ignoreProperties);
         return mapperFacade.map(source, target);
+    }
+
+    /**
+     * 生成新对象数组并拷贝源对象数组
+     *
+     * @param source source
+     * @param target target
+     * @return T
+     * @date 2020/3/4 15:29
+     */
+    public static <S, T> List<T> copyList(Collection<S> source, Class<T> target) {
+        return mapperFactory.getMapperFacade().mapAsList(source, target);
+    }
+
+    /**
+     * 生成新对象数组并拷贝源对象数组，自定义映射字段
+     *
+     * @param source source
+     * @param target target
+     * @return T
+     * @date 2020/3/4 15:29
+     */
+    public static <S, T> List<T> copyList(Collection<S> source, Class<T> target, Map<String, String> fieldMap) {
+        return getMapperFacade(source, target, fieldMap, (String) null).mapAsList(source, target);
     }
 
     /**
