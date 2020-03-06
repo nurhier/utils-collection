@@ -1,8 +1,8 @@
 # utils-collection
 [![Build Status](https://travis-ci.org/nurhier/utils-collection.svg?branch=master)](https://travis-ci.org/nurhier/utils-collection)
 [![codecov](https://codecov.io/gh/nurhier/utils-collection/branch/master/graph/badge.svg)](https://codecov.io/gh/nurhier/utils-collection)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=utils-collection&metric=alert_status)](https://sonarcloud.io/dashboard?id=nurhier_utils-collection)
-[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=utils-collection&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=nurhier_utils-collection)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=nurhier_utils-collection&metric=alert_status)](https://sonarcloud.io/dashboard?id=nurhier_utils-collection)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=nurhier_utils-collection&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=nurhier_utils-collection)
 # What is utils collection
 collect some java utils from coding work
 # Modules
