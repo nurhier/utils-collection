@@ -47,14 +47,14 @@ public class RedisCacheAspect {
         }
         if (StringUtils.isNotBlank(cacheKey)) {
             // get from redis
-            result = null;
+            result = getFromRedis(cacheKey);
         }
         if (result != null) {
             return result;
         }
         result = joinPoint.proceed();
         if (result != null && StringUtils.isNotBlank(cacheKey)) {
-            // set redis
+            setForRedis(cacheKey, result);
         }
         return result;
     }
@@ -105,5 +105,28 @@ public class RedisCacheAspect {
             }
         }
         return method;
+    }
+
+
+    /**
+     * getFromRedis
+     *
+     * @param key key
+     * @return java.lang.Object
+     * @date 2020/3/6 23:48
+     */
+    private Object getFromRedis(String key) {
+        return null;
+    }
+
+    /**
+     * setForRedis
+     *
+     * @param key key
+     * @param value value
+     * @date 2020/3/6 23:48
+     */
+    private void setForRedis(String key, Object value) {
+        // set redis
     }
 }
