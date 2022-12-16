@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <properties>
-        <spring.version>5.2.2.RELEASE</spring.version>
+        <spring.version>5.2.20.RELEASE</spring.version>
         <org.aspectj.version>1.9.5</org.aspectj.version>
     </properties>
     <artifactId>spring</artifactId>
